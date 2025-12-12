@@ -1,0 +1,39 @@
+import os
+import shutil
+
+def organize_files(source_folder, destination_folder, file_extension=".jpg"):
+    """
+    Moves all files with a specific extension from a source to a destination folder.
+    """
+    
+    # 1. Ensure the destination folder exists; create it if necessary
+    if not os.path.exists(destination_folder):
+        os.makedirs(destination_folder)
+        print(f"Created destination folder: {destination_folder}")
+        
+    count = 0
+    
+    # 2. Iterate over all files in the source folder
+    print(f"Scanning source folder: {source_folder}")
+    for filename in os.listdir(source_folder):
+        # Construct the full path to the file
+        source_path = os.path.join(source_folder, filename)
+        
+        # Check if it is a file AND ends with the specified extension
+        if os.path.isfile(source_path) and filename.lower().endswith(file_extension.lower()):
+            
+            # Construct the full path for the destination
+            destination_path = os.path.join(destination_folder, filename)
+            
+            try:
+                # Use shutil.move to move the file
+                shutil.move(source_path, destination_path)
+                print(f"Moved: {filename}")
+                count += 1
+            except Exception as e:
+                print(f"Error moving {filename}: {e}")
+                
+    print("\n" + "="*35)
+    print(f"✅ Automation Complete: {count} {file_extension} file(s) moved.")
+    print(f"Files are now in: {destination_folder}")
+    print("="*35)
